@@ -8,12 +8,9 @@ class Player():
         self.atk = attack
         self.dfn = defense
         self.gold = 1000
-        self.inv = {}
+        self.inv = {"Health Potion" : 0, "Speed Potion" : 0, "Attack Potion" : 0, "Defense" : 0}
         self.win = 0
         self.loss = 0
-
-    def getJob(self):
-        return self.job
 
     def getName(self):
         return self.name
@@ -32,6 +29,30 @@ class Player():
 
     def getGold(self):
         return self.gold
+
+    def getInvValues(self, key):
+        return self.inv.get(key)
+
+    def getWins(self):
+        return self.win
+
+    def getLosses(self):
+        return self.loss
+
+    def skill(self, character):
+        if(character == "Arcstrider"):
+            return "20\% Chance for Arcstrider to halve its' opponent's life points!"
+        elif(character == "Dawnblade"):
+            return "20\% Chance for recoil damage of 30 life points to Dawnblade!"
+        elif(character == "Gunslinger"):
+            return "50\% Chance for Gunslinger to attack its' opponent twice!"
+        elif (character == "Sentinel"):
+            return "100\% Chance for Sentinel to go through opponent's defense next turn!"
+        elif (character == "Voidwalker"):
+            return "30% Chance to dodge opponent's attack!"
+        else:
+            return "20% Chance to inflict lifesteal!"
+
 
     def attack(self):
         print(self.name + " attacks the enemy!")

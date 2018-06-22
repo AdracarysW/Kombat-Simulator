@@ -1,5 +1,4 @@
 from player import Player
-from game import Game
 import random
 
 class Gunslinger(Player):
@@ -11,7 +10,7 @@ class Gunslinger(Player):
         if (random.randint(0, 100) < 50):
             if(players.getHer):
                 players[villian].takeDamage(players[hero].getAttack())
-            else: 
+            else:
                 players[hero].takeDamage(players[villian].getAttack())
         else:
             pass
