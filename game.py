@@ -27,6 +27,8 @@ names = ["Arcstrider", "Dawnblade", "Gunslinger", "Sentinel", "Voidwalker", "War
 select1 = ""
 select2 = ""
 entry = CYAN + "?> " + END
+oneShop = False
+twoShop = False
 
 def addCharacters(self):
     global characters
@@ -163,11 +165,82 @@ def viewPlayerTwo(self): #shows the stats of player one
     print("Losses: {}".format(playerTwo.getLosses()))
 
 
-def battle(self):
-    pass
+def fight(self):
+    global playerOne,
+    global playerTwo
+    i = 3
+    print("Battle will commence between {} and {}!".format(playerOne[0].getName()))
+    while (i >= 0):
+        print(str(i) + "...")
+        time.sleep(1)
+        i -= 1
+    while((playerOne[0].getHealth() > 0) and (playerTwo[0].getHealth())):
+        fightTurn(playerOne[0], playerTwo[0])
+        fightTurn(playerTwo[0], playerOne[0])
+    if (playerOne[0].getHealth() <= 0):
+        print("Player Two wins the fight!")
+    else:
+        print("Player One wins the fight!")
 
-def fightTurn(self):
-    pass
+
+def canBattle(self):
+    global bool1, bool2
+    if (bool1 and bool2):
+        return True
+    else: 
+        return False
+
+
+def fightTurnOne(self):
+    global entry
+    global playerOne
+    global playerTwo
+    heal = 40
+    speed = 25
+    attack = 30
+    defense = 40
+    print('''
+    Fight Menu:
+    1. Attack
+    2. Potion
+    3. Skill
+    ''')
+    move = int(input(entry))
+    if (move == 1):
+        playerTwo[0].takeDamage(playerOne[0].getAttack())
+        print("Player One attacks Player Two. \n P2 HP: {}".format(playerTwo[0].getHealth()))
+    elif (move == 2):
+        print("Potions:")
+        if (playerOne[0].getInvValues("Health Potion") > 0):
+            print("1. Health Potion")
+        elif (playerOne[0].getInvValues("Speed Potion") > 0):
+            print("2. Speed Potion")
+        elif (playerOne[0].getInvValues("Attack Potion") > 0):
+            print("3. Attack Potion")
+        elif (playerOne[0].getInvValues("Defense Potion") > 0):
+            print("4. Defense Potion")
+        else:
+            print("You don't have any potions")
+        choice = int(input(entry))   
+            if (choice == 1):
+                playerOne[0].increaseHealth()
+                playerOne[0].changeInvValues("Health Potion")
+            elif (choice == 2):
+                playerOne[0].increaseSpeed()
+                playerOne[0].changeInvValues("Speed Potion")
+            elif (choice == 3):
+                playerOne[0].increaseAttack()
+                playerOne[0].changeInvValues("Attack Potion")
+            elif (choice == 4):
+                playerOne[0].increaseDefense()
+                playerOne[0].changeInvValues("Defense Potion")
+            else:
+                print("Not one of the choices")
+    elif (move == 3):
+        playerOne[0].skill(playerOne[0].getName())
+    else:
+        mainMenuError("You've done goofed")
+        
 
 def menu(self):
     screen += ("Main Menu")
@@ -202,24 +275,88 @@ def main(self):
                 mainMenuError("Two players required to play!")
         elif (location == 2): #Lobby
             if (canLobby()):
-                pass
+                lobby
             else:
                 pass
         elif (location == 3): #Battle
             if (canBattle()):
-                Fight()
+                fight()
             else:
-                pass
+                print("You need two PLAYERS in order to fight!")
         elif (location == 4): #Shop
             if (canShop()):
                 goShopping()
-                    Shop.method(player[0])
             else:
-                pass
+                mainMenuError("Neither players have sufficient gold to buy anything.")
         elif (location == 5): #Quit
             if (canQuit())):
-                pass
+                break
             else:
-                pass
+                print("Exiting...")
         else:
             mainMenuError("You've done goofed.")
+
+def canQuit(self):
+    global entry
+    print("Are you sure you want to quit? (Y/N)")
+    var = input(entry)
+    if(var.upper() == "Y"):
+        return True
+    else:
+        return False
+
+
+def canShop(self):
+    global oneShop
+    global twoShop
+    if (canShopOne() or canShopTwo()):
+        return True
+    else:
+        return False
+
+def canShopOne(self):
+    global oneShop
+    print("Player One")
+    print("Current inventory ")
+    print("Gold: {}\n".format(playerOne[0].getGold()))
+    print("Potions: ")
+    print("  Health  -> {}".format(playerOne[0].getInvValues("Health Potion")))
+    print("  Speed   -> {}".format(playerOne[0].getIntValues("Speed Potion")))
+    print("  Attack  -> {}".format(playerOne[0].getIntValues("Attack Potion")))
+    print("  Defense -> {}\n".format(playerOne[0].getIntValues("Defense Potion")))
+    if (playerOne[0].getGold() >= 50):
+        ("You have sufficient gold, you may proceed.")
+            oneShop = True
+            return True
+    else: 
+        ("Player One has insufficient gold, you cannot buy anything.")
+        return False
+
+def canShopTwo(self):
+    global twoShop
+    print("Player Two")
+    print("Current inventory ")
+    print("Gold: {}\n".format(playerTwo[0].getGold()))
+    print("Potions: ")
+    print("  Health  -> {}".format(playerTwo[0].getInvValues("Health Potion")))
+    print("  Speed   -> {}".format(playerTwo[0].getIntValues("Speed Potion")))
+    print("  Attack  -> {}".format(playerTwo[0].getIntValues("Attack Potion")))
+    print("  Defense -> {}\n".format(playerTwo[0].getIntValues("Defense Potion")))
+    if (playerTwo[0].getGold() >= 50):
+        ("You have sufficient gold, you may proceed.")
+            twoShop = True
+            return True
+    else: 
+        ("Player Two has insufficient gold, you cannot buy anything.")
+        return False
+
+def goShopping(self):
+    global oneShop, twoShop
+    if (oneShop and twoShop):
+        Shop.buyPotions(playerOne[0])
+        Shop.buyPotions(playerTwo[0])
+    elif (oneShop):
+        Shop.buyPotions(playerOne[0])
+    else:
+        Shop.buyPotions(playerTwo[0])
+    

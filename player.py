@@ -1,5 +1,6 @@
-
 class Player():
+
+    _names = names
 
     def __init__(self, name, health, speed, attack, defense):
         self.name = name
@@ -31,7 +32,14 @@ class Player():
         return self.gold
 
     def getInvValues(self, key):
-        return self.inv.get(key)
+        return self.inv.get(value)
+
+    def changeInvValues(self, key):
+        self.inv[key] -= 1
+
+    def changeInv(self, newDict):
+        for key, value in newDict.items():
+            self.inv[key] = value
 
     def getWins(self):
         return self.win
@@ -53,6 +61,17 @@ class Player():
         else:
             return "20% Chance to inflict lifesteal!"
 
+    def increaseHealth(self):
+        self.hp += 40
+    
+    def increaseSpeed(self):
+        self.spd += 25
+
+    def increaseAttack(self):
+        self.atk += 30
+    
+    def increaseDefense(self):
+        self.dfn += 40
 
     def attack(self):
         print(self.name + " attacks the enemy!")
