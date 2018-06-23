@@ -1,6 +1,5 @@
-class Player():
 
-    _names = names
+class Player():
 
     def __init__(self, name, health, speed, attack, defense):
         self.name = name
@@ -9,7 +8,7 @@ class Player():
         self.atk = attack
         self.dfn = defense
         self.gold = 1000
-        self.inv = {"Health Potion" : 0, "Speed Potion" : 0, "Attack Potion" : 0, "Defense" : 0}
+        self.inv = {"Health Potion" : 0, "Speed Potion" : 0, "Attack Potion" : 0, "Defense Potion" : 0}
         self.win = 0
         self.loss = 0
 
@@ -32,7 +31,7 @@ class Player():
         return self.gold
 
     def getInvValues(self, key):
-        return self.inv.get(value)
+        return self.inv.get(key)
 
     def changeInvValues(self, key):
         self.inv[key] -= 1

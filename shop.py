@@ -14,7 +14,7 @@ class Shop():
     END = '\033[0m'
 
     def __init__(self):
-        self.newDict = {"Health Potion" : 0, "Speed Potion" : 0, "Attack Potion" : 0, "Defense" : 0}
+        self.newDict = {"Health Potion" : 0, "Speed Potion" : 0, "Attack Potion" : 0, "Defense Potion" : 0}
   
     def buyPotions(self, player, money):
         heal = 150
@@ -24,13 +24,13 @@ class Shop():
         gold = money
         print("Welcome to the SHOP!")
         while (gold != 50):
-            print("Current Gold: {}\n".format(gold)
-            print('''
-            1. Health Potion
-            2. Speed Potion
-            3. Attack Potion
-            4. Defense Potion
-            ''')
+            print("Current Gold: {}\n".format(gold))
+            print("Potions")
+            print("1. Health Potion")
+            print("2. Speed Potion")
+            print("3. Attack Potion")
+            print("4. Defense Potion")
+            
             num = int(input(self.CYAN + "?> " + self.END))
             if (num == 1):
                 print("Number of HEALTH POTIONS: ")
