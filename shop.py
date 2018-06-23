@@ -15,13 +15,14 @@ class Shop():
 
     def __init__(self):
         self.newDict = {"Health Potion" : 0, "Speed Potion" : 0, "Attack Potion" : 0, "Defense Potion" : 0}
-  
-    def buyPotions(self, player, money):
+        self.gold = 0
+
+    def buyPotions(self, player, gold):
         heal = 150
         speed = 50
         attack = 100
         defense = 150
-        gold = money
+        self.gold += gold
         print("Welcome to the SHOP!")
         while (gold != 50):
             print("Current Gold: {}\n".format(gold))
@@ -55,3 +56,6 @@ class Shop():
             else: 
                 print(self.RED + "Invalid Entry" + self.END)
         return self.newDict
+    
+    def amtGold(self):
+        return self.gold

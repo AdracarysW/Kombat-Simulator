@@ -45,14 +45,14 @@ def addCharacters():
 def canAddPlayers():
     global bool1
     global bool2
-    print("Player One, are you ready? (Y/N)")
+    print("\nPlayer One, are you ready? (Y/N)")
     ans1 = input(entry)
     if (ans1.upper() == "Y"):
         bool1 = True
         print("Player One ready!")
     elif ((ans1.upper() != "Y") or (ans1.upper() != "N")):
         mainMenuError("Invalid Selection")
-    print("Player Two, are you ready? (Y/N)")
+    print("\nPlayer Two, are you ready? (Y/N)")
     ans2 = input(entry)
     if (ans2.upper() == "Y"):
         bool2 = True
@@ -90,21 +90,10 @@ def selectionOne():
         print("Player 1: Choose your character")
         select1 = input(entry)
         for name in names:
-            if (select1 == name):
+            if (select1.lower() == name.lower()):
                 addPlayerOne(select1.title())
                 return
-        print("Invalid selection")
-
-def showCharacters():
-    global characters
-    for person in characters:
-        print("")
-        print("{}".format(BOLD + person.getName() + END))
-        print("Health:  {}".format(person.getHealth()))
-        print("Speed:   {}".format(person.getSpeed()))
-        print("Attack:  {}".format(person.getAttack()))
-        print("Defense: {}\n".format(person.getDefense()))
-
+        mainMenuError("Invalid selection")
 
 def selectionTwo():
     global select1
@@ -114,14 +103,25 @@ def selectionTwo():
     while(True):
         print("Player 2: Choose a different character")
         select2 = input(entry)
-        if (select2 == select1):
-            print("ERROR\n" + "Choose a different character")
+        if (select2.lower() == select1.lower()):
+            mainMenuError("ERROR\n" + "Choose a different character")
         else:
             for name in names:
-                if (select2 == name):
+                if (select2.lower() == name.lower()):
                     addPlayerTwo(select2.title())
                     return
-            print("Invalid selection")
+            mainMenuError("Invalid selection")
+
+def showCharacters():
+    global characters
+    for person in characters:
+        print("")
+        print("{}".format(BOLD + GREEN + person.getName() + END))
+        print("Health:  {}".format(person.getHealth()))
+        print("Speed:   {}".format(person.getSpeed()))
+        print("Attack:  {}".format(person.getAttack()))
+        print("Defense: {}\n".format(person.getDefense()))
+        print("{} {}\n".format(BOLD + PURPLE + "SKILL" + END, person.skill(person.getName())))
 
 def canLobby(bool):
     return bool
@@ -134,9 +134,7 @@ def viewPlayerOne(): #shows the stats of player one
     global playerOne
     global BOLD
     global END
-    print("Player 1")
-    print("")
-    print(BOLD + playerOne[0].getName() + END)
+    print("\nP1 - {}".format(BOLD + playerOne[0].getName() + END))
     print("Health:  {}".format(playerOne[0].getHealth()))
     print("Speed:   {}".format(playerOne[0].getSpeed()))
     print("Attack:  {}".format(playerOne[0].getAttack()))
@@ -147,16 +145,12 @@ def viewPlayerOne(): #shows the stats of player one
     print("  Speed   -> {}".format(playerOne[0].getInvValues("Speed Potion")))
     print("  Attack  -> {}".format(playerOne[0].getInvValues("Attack Potion")))
     print("  Defense -> {}\n".format(playerOne[0].getInvValues("Defense Potion")))
-    print("Wins: {}".format(playerOne[0].getWins()))
-    print("Losses: {}".format(playerOne[0].getLosses()))
 
 def viewPlayerTwo(): #shows the stats of player one
     global playerTwo
     global BOLD
     global END
-    print("Player 2")
-    print("")
-    print("{}".format(BOLD + playerTwo[0].getName() + END))
+    print("\nP2 - {}".format(BOLD + playerTwo[0].getName() + END))
     print("Health:  {}".format(playerTwo[0].getHealth()))
     print("Speed:   {}".format(playerTwo[0].getSpeed()))
     print("Attack:  {}".format(playerTwo[0].getAttack()))
@@ -167,8 +161,6 @@ def viewPlayerTwo(): #shows the stats of player one
     print("  Speed   -> {}".format(playerTwo[0].getInvValues("Speed Potion")))
     print("  Attack  -> {}".format(playerTwo[0].getInvValues("Attack Potion")))
     print("  Defense -> {}\n".format(playerTwo[0].getInvValues("Defense Potion")))
-    print("Wins: {}".format(playerTwo[0].getWins()))
-    print("Losses: {}".format(playerTwo[0].getLosses()))
 
 
 def fight():
@@ -203,7 +195,7 @@ def fightTurnOne():
     global playerOne
     global playerTwo
     print('''
-    Fight Menu:
+    P1 - Fight Menu:
     1. Attack
     2. Potion
     3. Skill
@@ -250,7 +242,7 @@ def fightTurnTwo():
     global playerOne
     global playerTwo
     print('''
-    Fight Menu:
+    P2 - Fight Menu:
     1. Attack
     2. Potion
     3. Skill
@@ -291,9 +283,11 @@ def fightTurnTwo():
     else:
         mainMenuError("You've done goofed")
 
+#---------Menu------------#
+
 def mainMenu():
     screen = ""
-    screen += ("Main Menu\n")
+    screen += ("\nMain Menu\n")
     screen += ("1. Players\n")
     screen += ("2. Lobby\n")
     screen += ("3. Battle\n")
@@ -307,53 +301,6 @@ def mainMenuError(err):
     global END
     err.upper()
     print(BOLD + RED + err + END)
-
-def main():
-    addCharacters()
-    while(True):
-        print(mainMenu())
-        location = int(input(entry)) # maybe str
-        while location not in [1, 2, 3, 4, 5]:
-            print(mainMenu())
-            location = int(input(entry))
-        if (location == 1): #Players
-            if (canAddPlayers()):
-                addPlayers()
-                canLobby(True)
-            else:
-                mainMenuError("Two players required to play!")
-        elif (location == 2): #Lobby
-            if (canLobby(True)):
-                lobby()
-            else:
-                pass
-        elif (location == 3): #Battle
-            if (canBattle()):
-                fight()
-            else:
-                mainMenuError("You need two PLAYERS in order to fight!")
-        elif (location == 4): #Shop
-            if (canShop()):
-                goShopping()
-            else:
-                mainMenuError("Neither players have sufficient gold to buy anything.")
-        elif (location == 5): #Quit
-            if (canQuit()):
-                return
-            else:
-                print("Exiting...")
-        else:
-            mainMenuError("You've done goofed.")
-
-def canQuit():
-    global entry
-    print("Are you sure you want to quit? (Y/N)")
-    var = input(entry)
-    if(var.upper() == "Y"):
-        return True
-    else:
-        return False
-
 
 def canShop():
     global oneShop
@@ -401,14 +348,68 @@ def canShopTwo():
 
 def goShopping():
     global oneShop, twoShop
-    sh = Shop()
     if (oneShop and twoShop):
-        playerOne[0].changeInv(sh.buyPotions(playerOne[0], playerOne[0].getGold()))
-        playerTwo[0].changeInv(sh.buyPotions(playerTwo[0], playerTwo[0].getGold()))
+        on = Shop()
+        playerOne[0].changeInv(on.buyPotions(playerOne[0], playerOne[0].getGold()))
+        playerOne[0].decreaseGold(on.amtGold())
+        tw = Shop()
+        playerTwo[0].changeInv(tw.buyPotions(playerTwo[0], playerTwo[0].getGold()))
+        playerTwo[0].decreaseGold(tw.amtGold())
     elif (oneShop):
-        playerOne[0].changeInv(sh.buyPotions(playerOne[0], playerOne[0].getGold()))
+        on = Shop()
+        playerOne[0].changeInv(on.buyPotions(playerOne[0], playerOne[0].getGold()))
     else:
-        playerTwo[0].changeInv(sh.buyPotions(playerTwo[0], playerTwo[0].getGold()))
+        tw = Shop()
+        playerTwo[0].changeInv(tw.buyPotions(playerTwo[0], playerTwo[0].getGold()))
+
+
+def main():
+    addCharacters()
+    while(True):
+        print(mainMenu())
+        location = int(input(entry)) # maybe str
+        while location not in [1, 2, 3, 4, 5]:
+            print(mainMenu())
+            location = int(input(entry))
+        if (location == 1): #Players
+            if (canAddPlayers()):
+                addPlayers()
+                canLobby(True)
+            else:
+                mainMenuError("Two players required to play!")
+        elif (location == 2): #Lobby
+            if (canLobby(True)):
+                lobby()
+            else:
+                pass
+        elif (location == 3): #Battle
+            if (canBattle()):
+                fight()
+            else:
+                mainMenuError("You need two PLAYERS in order to fight!")
+        elif (location == 4): #Shop
+            if (canShop()):
+                goShopping()
+            else:
+                mainMenuError("Neither players have sufficient gold to buy anything.")
+        elif (location == 5): #Quit
+            if (canQuit()):
+                return
+            else:
+                print("Exiting...")
+        else:
+            mainMenuError("You've done goofed.")
+
+def canQuit():
+    global entry
+    print("Are you sure you want to quit? (Y/N)")
+    var = input(entry)
+    if(var.upper() == "Y"):
+        return True
+    else:
+        return False
+
+#----------Execute---------#
 
 main()
 
