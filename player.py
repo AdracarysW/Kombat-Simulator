@@ -34,12 +34,14 @@ class Player():
     def changeInvValues(self, key):
         self.inv[key] -= 1
 
-    def changeInv(self, newDict):
+    def changeInv(self, newDict, gold):
+        self.gold = gold
         for key, value in newDict.items():
             self.inv[key] = value
 
     def decreaseGold(self, amount):
-        self.gold -= amount
+        print("It goes here")
+        self.gold = amount
 
     def skill(self, character):
         if(character == "Arcstrider"):

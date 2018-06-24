@@ -208,11 +208,11 @@ def fightTurnOne():
         print("Potions:")
         if (playerOne[0].getInvValues("Health Potion") > 0):
             print("1. Health Potion")
-        elif (playerOne[0].getInvValues("Speed Potion") > 0):
+        if (playerOne[0].getInvValues("Speed Potion") > 0):
             print("2. Speed Potion")
-        elif (playerOne[0].getInvValues("Attack Potion") > 0):
+        if (playerOne[0].getInvValues("Attack Potion") > 0):
             print("3. Attack Potion")
-        elif (playerOne[0].getInvValues("Defense Potion") > 0):
+        if (playerOne[0].getInvValues("Defense Potion") > 0):
             print("4. Defense Potion")
         else:
             print("You don't have any potions")
@@ -335,9 +335,9 @@ def canShopTwo():
     print("Gold: {}\n".format(playerTwo[0].getGold()))
     print("Potions: ")
     print("  Health  -> {}".format(playerTwo[0].getInvValues("Health Potion")))
-    print("  Speed   -> {}".format(playerTwo[0].getIntValues("Speed Potion")))
-    print("  Attack  -> {}".format(playerTwo[0].getIntValues("Attack Potion")))
-    print("  Defense -> {}\n".format(playerTwo[0].getIntValues("Defense Potion")))
+    print("  Speed   -> {}".format(playerTwo[0].getInvValues("Speed Potion")))
+    print("  Attack  -> {}".format(playerTwo[0].getInvValues("Attack Potion")))
+    print("  Defense -> {}\n".format(playerTwo[0].getInvValues("Defense Potion")))
     if (playerTwo[0].getGold() >= 50):
         print("You have sufficient gold, you may proceed.")
         twoShop = True
@@ -347,20 +347,19 @@ def canShopTwo():
         return False
 
 def goShopping():
-    global oneShop, twoShop
+    global oneShop
+    global twoShop
     if (oneShop and twoShop):
         on = Shop()
-        playerOne[0].changeInv(on.buyPotions(playerOne[0], playerOne[0].getGold()))
-        playerOne[0].decreaseGold(on.amtGold())
+        playerOne[0].changeInv(on.buyPotions(playerOne[0], playerOne[0].getGold()) , on.amtGold())
         tw = Shop()
-        playerTwo[0].changeInv(tw.buyPotions(playerTwo[0], playerTwo[0].getGold()))
-        playerTwo[0].decreaseGold(tw.amtGold())
+        playerTwo[0].changeInv(tw.buyPotions(playerTwo[0], playerTwo[0].getGold()), tw.amtGold())
     elif (oneShop):
         on = Shop()
-        playerOne[0].changeInv(on.buyPotions(playerOne[0], playerOne[0].getGold()))
+        playerOne[0].changeInv(on.buyPotions(playerOne[0], playerOne[0].getGold()), on.amtGold())
     else:
         tw = Shop()
-        playerTwo[0].changeInv(tw.buyPotions(playerTwo[0], playerTwo[0].getGold()))
+        playerTwo[0].changeInv(tw.buyPotions(playerTwo[0], playerTwo[0].getGold()), tw.amtGold())
 
 
 def main():
