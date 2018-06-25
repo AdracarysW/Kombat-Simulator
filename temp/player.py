@@ -1,79 +1,80 @@
 
-from game import Game
-from textTools import *
-
 class Player():
 
-    def __init__(self, playerClass, name):
-        self.ourClass = playerClass
-        self.name = ''
-        self.hp = 0
-        self.atk = 0
-        self.spd = 0
-        self.defn = 0
-        self.mana = 0
-        self.gold = 100
-        self.isBattling = False
-        self.dataWith = 40
+    def __init__(self, name, health, speed, attack, defense):
+        self.name = name
+        self.hp = health
+        self.spd = speed
+        self.atk = attack
+        self.dfn = defense
+        self.gold = 1000
+        self.inv = {"Health Potion" : 0, "Speed Potion" : 0, "Attack Potion" : 0, "Defense Potion" : 0}
 
-    def canAfford(self, val):
-        if self.gold >= val:
-            return True
+    def getName(self):
+        return self.name
+
+    def getHealth(self):
+        return self.hp
+
+    def getSpeed(self):
+        return self.spd
+
+    def getAttack(self):
+        return self.atk
+
+    def getDefense(self):
+        return self.dfn
+
+    def getGold(self):
+        return self.gold
+
+    def getInvValues(self, key):
+        return self.inv.get(key)
+
+    def changeInvValues(self, key):
+        self.inv[key] -= 1
+
+    def changeInv(self, newDict, gold):
+        self.gold = gold
+        for key, value in newDict.items():
+            self.inv[key] = value
+
+    def decreaseGold(self, amount):
+        print("It goes here")
+        self.gold = amount
+
+    def skill(self, character):
+        if(character == "Arcstrider"):
+            return "20% Chance for Arcstrider to halve its' opponent's life points!"
+        elif(character == "Dawnblade"):
+            return "20% Chance for recoil damage of 30 life points to Dawnblade!"
+        elif(character == "Gunslinger"):
+            return "50% Chance for Gunslinger to attack its' opponent twice!"
+        elif (character == "Sentinel"):
+            return "100% Chance for Sentinel to go through opponent's defense next turn!"
+        elif (character == "Voidwalker"):
+            return "30% Chance to dodge opponent's attack!"
         else:
-            return False
+            return "20% Chance to inflict lifesteal!"
 
-    def death(self):
-        self.isBattling = False
-        self.hp = 0
+    def increaseHealth(self):
+        self.hp += 40
+    
+    def increaseSpeed(self):
+        self.spd += 25
 
-    def isAlive(self):
-        if self.hp > 0:
-            return True
-        else:
-            return False
+    def increaseAttack(self):
+        self.atk += 30
+    
+    def increaseDefense(self):
+        self.dfn += 40
 
-    def playerPerks(self):
-        if self.ourClass == 'arcstrider':
-            self.hp = 300
-            self.atk = 90
-            self.spd = 60
-            self.defn = 50
-        elif self.ourClass == 'dawnblade':
-            self.hp = 450
-            self.atk = 160
-            self.spd = 20
-            self.defn = 20
-        elif self.ourClass == 'gunslinger':
-            self.hp = 330
-            self.atk = 80
-            self.spd = 50
-            self.defn = 40
-        elif self.ourClass == 'sentinel':
-            self.hp == 500
-            self.atk = 60
-            self.spd = 10
-            self.defn = 80
-        elif self.ourClass == 'voidwalker':
-            self.hp == 410
-            self.atk == 100
-            self.spd = 30
-            self.defn = 60
-        elif self.ourClass == 'warlock':
-            self.hp == 350
-            self.atk == 140
-            self.spd = 40
-            self.defn = 40
+    def attack(self):
+        print(self.name + " attacks the enemy!")
+        return self.atk
 
-    def printInfo(self):
-       marqueeprint('[HERO DATA]')
-        centerprint(Game.lr_justify('Class:', str(self.ourclass), self.datawidth))
-        centerprint(Game.lr_justify('Name:', str(self.name), self.datawidth))
-        centerprint(Game.lr_justify('Level:', str(self.level), self.datawidth))
-        centerprint(Game.lr_justify('XP:', str(self.xp) + '/' + str(self.nextlevel), self.datawidth))
-        centerprint(Game.lr_justify('HP:', str(self.hp) + '/' + str(self.maxhp), self.datawidth))
-        centerprint(Game.lr_justify('Gold:', str(self.gold), self.datawidth))
-        centerprint(Game.lr_justify('Atk:', str(self.atk), self.datawidth))
-        centerprint(Game.lr_justify('Defense:', str(self.defn), self.datawidth))
-        centerprint(Game.lr_justify('Dodge:', str(self.dodge), self.datawidth))
-        centerprint(Game.lr_justify('battles fought', str(self.battlecount), self.datawidth))
-        print('')
+    def takeDamage(self, attack):
+        self.hp -= attack - self.dfn
+        damage = attack - self.dfn
+        print(self.name + " took " + str(damage) + " amount of damage. Current health : " + str(self.hp))
+        return attack - self.dfn

@@ -1,80 +1,108 @@
 
+from game import Game
+from textTools import *
+
 class Player():
 
-    def __init__(self, name, health, speed, attack, defense):
-        self.name = name
-        self.hp = health
-        self.spd = speed
-        self.atk = attack
-        self.dfn = defense
-        self.gold = 1000
-        self.inv = {"Health Potion" : 0, "Speed Potion" : 0, "Attack Potion" : 0, "Defense Potion" : 0}
+    def __init__(self, playerClass, name):
+        self.ourClass = playerClass
+        self.name = ''
+        self.mana = 3
+        self.hp = 0
+        self.maxHp = 0
+        self.atk = 0
+        self.spd = 0
+        self.defn = 0
+        self.mana = 0
+        self.gold = 100
+        self.isBattling = False
+        self.dataWidth = 40
+        self.items = []
 
-    def getName(self):
-        return self.name
-
-    def getHealth(self):
-        return self.hp
-
-    def getSpeed(self):
-        return self.spd
-
-    def getAttack(self):
-        return self.atk
-
-    def getDefense(self):
-        return self.dfn
-
-    def getGold(self):
-        return self.gold
-
-    def getInvValues(self, key):
-        return self.inv.get(key)
-
-    def changeInvValues(self, key):
-        self.inv[key] -= 1
-
-    def changeInv(self, newDict, gold):
-        self.gold = gold
-        for key, value in newDict.items():
-            self.inv[key] = value
-
-    def decreaseGold(self, amount):
-        print("It goes here")
-        self.gold = amount
-
-    def skill(self, character):
-        if(character == "Arcstrider"):
-            return "20% Chance for Arcstrider to halve its' opponent's life points!"
-        elif(character == "Dawnblade"):
-            return "20% Chance for recoil damage of 30 life points to Dawnblade!"
-        elif(character == "Gunslinger"):
-            return "50% Chance for Gunslinger to attack its' opponent twice!"
-        elif (character == "Sentinel"):
-            return "100% Chance for Sentinel to go through opponent's defense next turn!"
-        elif (character == "Voidwalker"):
-            return "30% Chance to dodge opponent's attack!"
+    def buyitem(self, item):
+        if self.canAfford(item):
+            self.gold -= item
+            self.items.append(item)
+            print('You bought ' + item)
         else:
-            return "20% Chance to inflict lifesteal!"
+            print('You can\'t afford that!')
 
-    def increaseHealth(self):
-        self.hp += 40
-    
-    def increaseSpeed(self):
-        self.spd += 25
+    def canAfford(self, val):
+        if self.gold >= val:
+            return True
+        else:
+            return False
 
-    def increaseAttack(self):
-        self.atk += 30
-    
-    def increaseDefense(self):
-        self.dfn += 40
+    def enoughMana(self, val):
+        if self.mana >= val:
+            return True
+        else:
+            return False
 
-    def attack(self):
-        print(self.name + " attacks the enemy!")
-        return self.atk
+    def death(self):
+        self.isBattling = False
+        self.hp = 0
 
-    def takeDamage(self, attack):
-        self.hp -= attack - self.dfn
-        damage = attack - self.dfn
-        print(self.name + " took " + str(damage) + " amount of damage. Current health : " + str(self.hp))
-        return attack - self.dfn
+    def isAlive(self):
+        if self.hp > 0:
+            return True
+        else:
+            return False
+
+    def playerPerks(self):
+        if self.ourClass == 'Arcstrider':
+            self.hp = 300
+            self.maxHp = 300
+            self.atk = 90
+            self.spd = 60
+            self.defn = 50
+        elif self.ourClass == 'Dawnblade':
+            self.hp = 450
+            self.maxHp = 450
+            self.atk = 160
+            self.spd = 20
+            self.defn = 20
+        elif self.ourClass == 'Gunslinger':
+            self.hp = 330
+            self.maxHp = 330
+            self.atk = 80
+            self.spd = 50
+            self.defn = 40
+        elif self.ourClass == 'Sentinel':
+            self.hp == 500
+            self.maxHp = 500
+            self.atk = 60
+            self.spd = 10
+            self.defn = 80
+        elif self.ourClass == 'Voidwalker':
+            self.hp == 410
+            self.maxHp = 410
+            self.atk == 100
+            self.spd = 30
+            self.defn = 60
+        elif self.ourClass == 'Warlock':
+            self.hp == 350
+            self.maxHp = 350
+            self.atk == 140
+            self.spd = 40
+            self.defn = 40
+
+    def printInfo(self):
+        marqueeprint('[PLAYER DATA]')
+        centerprint(lr_justify('Class:', str(self.ourClass), self.dataWidth))
+        centerprint(lr_justify('Name:', str(self.name), self.dataWidth))
+        centerprint(lr_justify('HP:', str(self.hp) + '/' + str(self.maxHp), self.dataWidth))
+        centerprint(lr_justify('Gold:', str(self.gold), self.dataWidth))
+        centerprint(lr_justify('Atk:', str(self.atk), self.dataWidth))
+        centerprint(lr_justify('Defense:', str(self.defn), self.dataWidth))
+        print('')
+
+    def datadict(self):
+        return {
+            'Class': str(self.ourClass),
+            'Name': str(self.name),
+            'HP': str(str(self.hp) + '/' + str(self.maxHp)),
+            'Gold': str(self.gold),
+            'Atk': str(self.atk),
+            'Def': str(self.defn)
+        }
