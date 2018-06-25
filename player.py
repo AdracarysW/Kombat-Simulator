@@ -49,6 +49,9 @@ class Player():
         else:
             return False
 
+    def takeDamage(self, amount):
+        self.hp -= amount
+
     def playerPerks(self):
         if self.ourClass == 'Arcstrider':
             self.hp = 300

@@ -1,6 +1,7 @@
 from player import Player
 from shop import Shop
 from textTools import *
+import random
 
 class Game():
 
@@ -79,10 +80,65 @@ class Game():
                 print('LOADING BATTLE GROUNDS')
                 self.ourhero = self.loadgame()
                 self.ourenemy = self.getenemy()
+                self.fight()
             else:
                 marqueeprint("Did you do preparations, young grasshopper?")
-            while self.ourhero.isalive():
-                self.fight()
+
+    def fight(self):
+        while playerOne.isAlive() and playerTwo.isAlive():
+            playerOne.hp = fightTurn(playerOne, playerTwo)
+            centerprint("{} HP [{}]".format(playerOne.name, str(| * (playerOne.hp // 10))))
+            fightTurn(playerTwo, playerOne)
+            centerprint("{} HP [{}]".format(playerTwo.name, str(| * (playerTwo.hp // 10))))
+        if playerOne.hp < 0:
+            marqueeprint("PLAYER TWO WINS!")
+            return
+        else:
+            marqueeprint("PLAYER ONE WINS!")
+            return
+
+    def fightTurn(self, x, y):
+        marqueeprint(x.name + "'s Turn")
+        centerprint('[a]ttack - [s]kill - [p]otion')
+        move = input()
+        if move == 'a' or move == '':
+            y.takeDamage(x.atk)
+            centerprint("{} attacks {} for {} damage!".format(x.name, y.name, str(x.atk)))
+            return x.hp
+        elif move == 's':
+            if x.ourClass == 'Arcstrider':
+                y.hp = y.hp / 2
+                return x.hp
+            elif x.ourClass == 'Dawnblade':
+                x.takeDamage(50)
+                return x.hp
+            elif x.ourClass == 'Gunslinger':
+                amt = 0
+                y.takeDamage(x.atk)
+                amt += x.atk
+                y.takeDamage(x.atk)
+                amt += x.atk
+                centerprint("{} attacks {} twice for {} damage".format(x.name, y.name, str))
+            elif x.ourClass == 'Sentinel':
+                y.takeDamage(x.atk + y.defn)
+                centerprint("{} goes through {}'s defense and attacks for {} damage".format(x.name, y.name, x.atk + y.defn))
+            elif x.ourClass == 'Voidwalker':
+                x.hp += y.atk
+                centerprint("{} dodges {}'s attack".format(x.name, y.name))
+            else:
+                # TODO ADD A SKILL COUNTER (2). IF IT'S 0, THEN YOU CAN'T USE YOUR SKILL
+                # TODO ADD COLORS
+                p = random.random() * 100
+                if p <= 20:
+                    amt = y.hp // 4
+                    y.hp = amt
+                    x.hp = x.hp + amt
+                    centerprint('{} initiates LIFESTEAL!'.format(x.name))
+                    return
+                else: 
+                    centerprint(self.RED + self.BOLD + "MISSED" + self.END)
+                    return
+
 
 
 
