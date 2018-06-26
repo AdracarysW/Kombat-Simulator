@@ -1,6 +1,6 @@
 
-# from game import Game
 from textTools import *
+from description import *
 
 class Player():
 
@@ -16,7 +16,9 @@ class Player():
         self.mana = 0
         self.gold = 100
         self.dataWidth = 40
-        self.items = []
+
+    def characters(self):
+        print(description)
 
     def getName(self):
         return self.name
@@ -78,13 +80,13 @@ class Player():
         elif self.ourClass == 'Voidwalker':
             self.hp = 410
             self.maxHp = 410
-            self.atk == 100
+            self.atk = 100
             self.spd = 30
             self.defn = 60
         elif self.ourClass == 'Warlock':
             self.hp = 350
             self.maxHp = 350
-            self.atk == 140
+            self.atk = 140
             self.spd = 40
             self.defn = 40
 

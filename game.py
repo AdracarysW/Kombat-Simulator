@@ -30,8 +30,11 @@ class Game():
         self.textwidth = 70
 
         self.didPreparations = False
+        self.justFight = False
 
         self.endLoop = False
+
+        self.something = False
 
     def gameloop(self):
         marqueeprint('')
@@ -39,33 +42,34 @@ class Game():
         centerprint('Game Design 1 - 2018')
         marqueeprint('')
         print("")
-        centerprint("Press [E]nter to Play")
+        centerprint("Press Enter to Play")
         print("")
         enter = input()
         if enter == '' or enter == 'e' or enter == 'E':
             while True:
                 if self.endLoop:
                     return
-                centerprint("")
-                centerprint('[p]reparation [f]ight')
-                centerprint("")
-                decision = input()
-                if decision == 'p' or decision == '':
+                if not(self.didPreparations):
+
                     self.didPreparations = True
                     self.playerOne = self.newPlayer('Player One')
                     self.playerTwo = self.newPlayer('Player Two')
                     self.playerOne.playerPerks()
                     self.playerTwo.playerPerks()
 
-                elif decision == 'f' and self.didPreparations:
+                else:    
+
                     i = 1
-                    while i <= 3:
+                    while i <= 2:
                         centerprint('LOADING BATTLE GROUNDS' + ('.' * i))
                         time.sleep(1)
                         i += 1
+                    centerprint('BATTLE GROUNDS LOADED')
+                    time.sleep(1)
+                    print('')
+                    marqueeprint('FIGHT')
+                    print('')
                     self.fight()
-                else:
-                    marqueeprint("Did you do preparations, young grasshopper?")
         else:
             return
 
@@ -88,8 +92,8 @@ class Game():
         elif ourClass == 'w':
             ourClass = 'Warlock'
         else:
-            centerprint('Please enter a valid selection')
-            ourClass = input()
+            centerprint("Lazy")
+            ourClass = 'Warlock'
         # ------------Name---------- #
         marqueeprint('[ENTER NAME]')
         centerprint('Your name, ' + str(ourClass) + '?\n')
@@ -102,26 +106,26 @@ class Game():
 
 
     def fight(self):
-        # print("It goes here")
-        print(str(self.playerOne.hp))
-        print(str(self.playerTwo.hp))
         while self.playerOne.hp > 0 and self.playerTwo.hp > 0:
-            # print("Does it also go here?")
+            if self.playerOne.hp == 200:
+                self.playerOne.hp = 160
+            elif self.playerTwo.hp == 200:
+                self.playerTwo.hp = 160
             healthList = []
             health = (self.fightTurn(self.playerOne, self.playerTwo))
             healthList.append(health[0])
             healthList.append(health[1])
             self.playerOne.hp = health[0]
             self.playerTwo.hp = health[1]
-            centerprint(str(self.playerOne.name) + "HP")
-            centerprint(str(self.playerOne.hp))
+            centerprint(str(self.playerOne.name) + "HP: " + str(self.playerOne.hp))
+            centerprint(str(self.playerTwo.name) + "HP: " + str(self.playerTwo.hp))
             health = (self.fightTurn(self.playerTwo, self.playerOne))
             healthList.append(health[0])
             healthList.append(health[1])
             self.playerTwo.hp = health[0]
             self.playerOne.hp = health[1]
-            centerprint(str(self.playerTwo.name) + "HP")
-            centerprint(str(self.playerTwo.hp))
+            centerprint(str(self.playerOne.name) + "HP: " + str(self.playerOne.hp))
+            centerprint(str(self.playerTwo.name) + "HP: " + str(self.playerTwo.hp))
         if self.playerOne.hp < 0:
             marqueeprint("")
             marqueeprint("PLAYER TWO WINS!")
@@ -134,12 +138,13 @@ class Game():
             return
 
     def fightTurn(self, x, y):
+        print('')
         marqueeprint(x.name + "'s Turn")
-        centerprint('[a]ttack - [s]kill - [p]otion')
+        centerprint('[a]ttack - [s]kill')
         move = input()
         if move == 'a' or move == '':
-            y.takeDamage(x.atk)
-            centerprint("{} attacks {} for {} damage!".format(x.name, y.name, str(x.atk)))
+            y.takeDamage(x.atk - y.defn)
+            centerprint("{} attacks {} for {} damage!\n".format(x.name, y.name, str(x.atk - y.defn)))
             return [x.hp , y.hp]
         elif move == 's':
             p = random.random() * 100
@@ -151,8 +156,13 @@ class Game():
                     self.missed()
                     return [x.hp , y.hp]
             elif x.ourClass == 'Dawnblade':
-                if p <= 20:
+                if p <= 60:
                     x.takeDamage(50)
+                    centerprint('{} takes 50 recoil damage'.format(x.name))
+                    return [x.hp , y.hp]
+                elif p > 60:
+                    x.atk += 40
+                    centerprint('{} boosts attacks for one turn'.format(x.name))
                     return [x.hp , y.hp]
                 else:
                     self.missed()
@@ -160,9 +170,9 @@ class Game():
             elif x.ourClass == 'Gunslinger':
                 if p <= 50:
                     amt = 0
-                    y.takeDamage(x.atk)
+                    y.takeDamage(x.atk - y.defn)
                     amt += x.atk
-                    y.takeDamage(x.atk)
+                    y.takeDamage(x.atk - y.defn)
                     amt += x.atk
                     centerprint("{} attacks {} twice for {} damage".format(x.name, y.name, str(amt)))
                     return [x.hp , y.hp]
@@ -197,8 +207,10 @@ class Game():
                 else: 
                     self.missed()
                     return [x.hp , y.hp]
+            
         else:
             centerprint("Invalid selection")
+            
 
 
     def missed(self):
