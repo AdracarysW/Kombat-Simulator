@@ -1,12 +1,12 @@
 
-from game import Game
+# from game import Game
 from textTools import *
 
 class Player():
 
     def __init__(self, playerClass, name):
         self.ourClass = playerClass
-        self.name = ''
+        self.name = name
         self.mana = 3
         self.hp = 0
         self.maxHp = 0
@@ -15,9 +15,11 @@ class Player():
         self.defn = 0
         self.mana = 0
         self.gold = 100
-        self.isBattling = False
         self.dataWidth = 40
         self.items = []
+
+    def getName(self):
+        return self.name
 
     def buyitem(self, item):
         if self.canAfford(item):
@@ -38,10 +40,6 @@ class Player():
             return True
         else:
             return False
-
-    def death(self):
-        self.isBattling = False
-        self.hp = 0
 
     def isAlive(self):
         if self.hp > 0:
@@ -72,19 +70,19 @@ class Player():
             self.spd = 50
             self.defn = 40
         elif self.ourClass == 'Sentinel':
-            self.hp == 500
+            self.hp = 500
             self.maxHp = 500
             self.atk = 60
             self.spd = 10
             self.defn = 80
         elif self.ourClass == 'Voidwalker':
-            self.hp == 410
+            self.hp = 410
             self.maxHp = 410
             self.atk == 100
             self.spd = 30
             self.defn = 60
         elif self.ourClass == 'Warlock':
-            self.hp == 350
+            self.hp = 350
             self.maxHp = 350
             self.atk == 140
             self.spd = 40
