@@ -1,5 +1,4 @@
 from player import Player
-from shop import Shop
 from textTools import *
 import random
 import time
@@ -137,6 +136,7 @@ class Game():
         centerprint('{} HP: {}/{}'.format(self.playerTwo.name, str(self.playerTwo.hp), str(self.playerTwo.maxHp)))
 
     def fightTurn(self, x, y):
+        cost = 1
         print('')
         marqueeprint(x.name + "'s Turn")
         centerprint('[a]ttack - [s]kill')
@@ -146,14 +146,14 @@ class Game():
             centerprint("{} attacks {} for {} damage!\n".format(x.name, y.name, str(x.atk - y.defn)))
         elif move == 's':
             p = random.random() * 100
-            if x.ourClass == 'Arcstrider':
+            if x.ourClass == 'Arcstrider' and x.enoughMana(cost):
                 if p <= 25:
                     amt = y.hp / 2
                     y.hp = amt
                     centerprint("{} deals critcial damage and halves {}'s health by {}".format(x.name, y.name, amt))
                 else:
                     self.missed()
-            elif x.ourClass == 'Dawnblade':
+            elif x.ourClass == 'Dawnblade' :
                 if p <= 60:
                     x.takeDamage(50)
                     centerprint('{} takes 50 recoil damage'.format(x.name))
@@ -173,8 +173,8 @@ class Game():
                 else:
                     self.missed()
             elif x.ourClass == 'Sentinel':
-                if p <= 99:
-                    y.takeDamage(x.atk + y.defn)
+                if p <= 90:
+                    y.takeDamage(x.atk)
                     centerprint("{} goes through {}'s defense and attacks for {} damage".format(x.name, y.name, x.atk + y.defn))
                 else:
                     self.missed()
