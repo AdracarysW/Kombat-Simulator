@@ -58,7 +58,7 @@ class Player():
             self.maxHp = 300
             self.atk = 90
             self.spd = 60
-            self.defn = 50
+            self.defn = 45
         elif self.ourClass == 'Dawnblade':
             self.hp = 450
             self.maxHp = 450
@@ -76,13 +76,13 @@ class Player():
             self.maxHp = 500
             self.atk = 60
             self.spd = 10
-            self.defn = 80
+            self.defn = 60
         elif self.ourClass == 'Voidwalker':
             self.hp = 410
             self.maxHp = 410
             self.atk = 100
             self.spd = 30
-            self.defn = 60
+            self.defn = 50
         elif self.ourClass == 'Warlock':
             self.hp = 350
             self.maxHp = 350
