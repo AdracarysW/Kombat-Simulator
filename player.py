@@ -19,17 +19,6 @@ class Player():
     def characters(self):
         print(description)
 
-    # def getName(self):
-    #     return self.name
-
-    # def buyitem(self, item):
-    #     if self.canAfford(item):
-    #         self.gold -= item
-    #         self.items.append(item)
-    #         print('You bought ' + item)
-    #     else:
-    #         print('You can\'t afford that!')
-
     def canAfford(self, val):
         if self.gold >= val:
             return True
@@ -54,42 +43,42 @@ class Player():
         if self.ourClass == 'Arcstrider':
             self.hp = 300
             self.maxHp = 300
-            self.atk = 90
-            self.spd = 60
-            self.defn = 45
+            self.atk = 70
+            self.spd = 50
+            self.defn = 40
             self.mana = 5
         elif self.ourClass == 'Dawnblade':
             self.hp = 450
             self.maxHp = 450
-            self.atk = 160
+            self.atk = 100
             self.spd = 20
             self.defn = 20
             self.mana = 5
         elif self.ourClass == 'Gunslinger':
             self.hp = 330
             self.maxHp = 330
-            self.atk = 80
+            self.atk = 60
             self.spd = 50
             self.defn = 40
             self.mana = 5
         elif self.ourClass == 'Sentinel':
             self.hp = 500
             self.maxHp = 500
-            self.atk = 60
+            self.atk = 50
             self.spd = 10
             self.defn = 60
             self.mana = 5
         elif self.ourClass == 'Voidwalker':
             self.hp = 410
             self.maxHp = 410
-            self.atk = 100
+            self.atk = 80
             self.spd = 30
             self.defn = 50
             self.mana = 5
         elif self.ourClass == 'Warlock':
             self.hp = 350
             self.maxHp = 350
-            self.atk = 140
+            self.atk = 90
             self.spd = 40
             self.defn = 40
             self.mana = 5

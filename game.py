@@ -109,9 +109,9 @@ class Game():
 
     def fight(self): # Players fight here
         while self.playerOne.isAlive() and self.playerTwo.isAlive():
-            self.checkAbilities()
             self.fightTurn(self.playerOne, self.playerTwo)
             self.printHp()
+            self.checkWinner()
             self.fightTurn(self.playerTwo, self.playerOne)
             self.printHp()
         self.checkWinner()
